@@ -24,17 +24,17 @@ Inherit from the Sendgrid Mailer:
 Send a "Transactional Template" mail:
 
 ```
-sendgrid   template: confirmation_template,
-              subject:  confirmation_subject,
-              from_name: 'Lending Loop',
-              to: { email: email },
-              vars: {
-                'first_name'             => recipient_name,
-                'LIST_COMPANY'           => "Some Company Name",
-                'HTML_LIST_ADDRESS_HTML' => "123 Random Road West | Los Angeles | CA | United States",
-                'CONFIRMATION_LINK'      => "%s/users/confirmation?token=#{confirmation_token}" % ENV['MAIL_HOST']
-            }
-            ```
+sendgrid  template: your_template_name_not_version,
+          subject:  "Subject of your email",
+          from_name: 'This is the name in the email, not the same as the email',
+          to: { email: email },
+          vars: {
+            'first_name'             => recipient_name,
+            'LIST_COMPANY'           => "Some Company Name",
+            'HTML_LIST_ADDRESS_HTML' => "123 Random Road West | Los Angeles | CA | United States",
+            'CONFIRMATION_LINK'      => "%s/users/confirmation?token=#{confirmation_token}" % ENV['MAIL_HOST']
+          }
+```
 
 Templates are taken from the templates inside the SendGrid dashboard under `Templates -> Transactional`.
 You have to provide the template name in the `template: template_name' parameter. It doesn't currently handle the template versions... yet.
@@ -43,20 +43,20 @@ If you are curions, the template is grabbed with a simple HTTP GET request right
 
 ```
 def get_template_id(template_name)
-      url = URI.parse('https://api.sendgrid.com/v3/templates')
-      req = Net::HTTP::Get.new(url.path)
-      req.basic_auth ENV['SENDGRID_USER'], ENV['SENDGRID_PASS']
-      http = Net::HTTP.new(url.host, url.port)
-      http.use_ssl = true
+  url = URI.parse('https://api.sendgrid.com/v3/templates')
+  req = Net::HTTP::Get.new(url.path)
+  req.basic_auth ENV['SENDGRID_USER'], ENV['SENDGRID_PASS']
+  http = Net::HTTP.new(url.host, url.port)
+  http.use_ssl = true
 
-      JSON.parse(http.request(req).body)['templates'].each do |template|
-        if template['name'] == template_name
-          return template['id']
-        end
-      end
-      nil
+  JSON.parse(http.request(req).body)['templates'].each do |template|
+    if template['name'] == template_name
+      return template['id']
     end
-    ```
+  end
+  nil
+end
+```
 
 https://sendgrid.com/docs/API_Reference/Web_API_v3/Transactional_Templates/smtpapi.html
 
@@ -64,24 +64,24 @@ Send a direct HTML email:
 ---
 
 ```
-sendgrid   subject:  'Hi, check out this HTML mail',
-              from_name: "NO REPLY",
-              to: { email: 'html@email.com' },
-              text: "This is the plain text portion.",
-              html: "<p>Put some HTML here</p>"
-              ```
-              
+sendgrid  subject:  'Hi, check out this HTML mail',
+          from_name: "NO REPLY",
+          to: { email: 'html@email.com' },
+          text: "This is the plain text portion.",
+          html: "<p>Put some HTML here</p>"
+```
+
 _Note: You can provide the text portion here as well, but it defaults to sending HTML if HTML is included, so it's actually not required to include the text here. It doesn't actually support fallbacks right now._
 
 Send a plain-text email:
 ---
 
 ```
-sendgrid   subject:  'Hi, check out this text mail',
-              from_name: "NO REPLY",
-              to: { email: 'text@email.com' },
-              text: "This is the plain text portion and that's all we have, folks!."
-              ```
+sendgrid  subject:  'Hi, check out this text mail',
+          from_name: "NO REPLY",
+          to: { email: 'text@email.com' },
+          text: "This is the plain text portion and that's all we have, folks!."
+```
 
 That's all for now, open to suggestions and will eventually probabaly make this into a gem if there's enough interest.
 Again, this is for the mandrill-rails users trying to use SendGrid.
