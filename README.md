@@ -12,16 +12,16 @@ Overall, it doesn't support full functionality right now, just emails with templ
 
 ## Instructions
 
-Inherit from the Sendgrid Mailer:
+#####Inherit from the Sendgrid Mailer:
 
 `class YourMailer < Sendgrid::Mailer`
 
 
-(Optional) Set Default `:from` address:
+#####(Optional) Set Default `:from` address:
 
 `default from: 'no-reply-default@email.com'`
 
-Send a "Transactional Template" mail:
+#####Send a "Transactional Template" mail:
 
 ```
 sendgrid  template: your_template_name_not_version,
@@ -60,8 +60,7 @@ end
 
 https://sendgrid.com/docs/API_Reference/Web_API_v3/Transactional_Templates/smtpapi.html
 
-Send a direct HTML email:
----
+#####Send a direct HTML email:
 
 ```
 sendgrid  subject:  'Hi, check out this HTML mail',
@@ -73,8 +72,7 @@ sendgrid  subject:  'Hi, check out this HTML mail',
 
 _Note: You can provide the text portion here as well, but it defaults to sending HTML if HTML is included, so it's actually not required to include the text here. It doesn't actually support fallbacks right now._
 
-Send a plain-text email:
----
+#####Send a plain-text email:
 
 ```
 sendgrid  subject:  'Hi, check out this text mail',
