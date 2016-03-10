@@ -1,9 +1,8 @@
 # sendgrid-rails-smtp
 SMTP API on Rails for SendGrid
 
-===
-
 ####This is made for mandrill-rails gem users who want an easy transition
+===
 
 In a nutshell, this is a simple replacement from a `MandrillMailer::TemplateMailer` inheritance to a `SendGrid::Mailer` inheritance.
 
@@ -12,7 +11,6 @@ Also all you have to change is the `mandril_mail` to `sendgrid`, everything else
 Overall, it doesn't support full functionality right now, just emails with templates, html emails and plain text.
 
 ## Instructions
-===
 
 Inherit from the Sendgrid Mailer:
 ---
